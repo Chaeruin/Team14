@@ -1,0 +1,11 @@
+services:
+  petfit-web:
+    container_name: takefive-web
+    image: chaeheamin/takefive-web
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
+    tty: true
+    environment:
+      - TZ=Asia/Seoul
