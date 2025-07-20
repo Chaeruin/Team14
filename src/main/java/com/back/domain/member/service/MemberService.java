@@ -131,8 +131,8 @@ public class MemberService {
 
     // 회원 정보 조회
     @Transactional(readOnly = true)
-    public MemberInfoResponseDto getMemberInfo() {
-        Member member = findMemberByAccessToken();
+    public MemberInfoResponseDto getMemberInfo(String accessToken) {
+        Member member = findMemberByAccessToken(accessToken);
 
         return new MemberInfoResponseDto(
                 member.getEmail(),
@@ -145,8 +145,8 @@ public class MemberService {
 
     // 회원 정보 수정
     @Transactional
-    public MemberInfoUpdateResponseDto updateMemberInfo(MemberInfoUpdateRequestDto reqBody) {
-        Member member = findMemberByAccessToken();
+    public MemberInfoUpdateResponseDto updateMemberInfo(MemberInfoUpdateRequestDto reqBody, String accessToken) {
+        Member member = findMemberByAccessToken(accessToken);
 
         member.update(
                 passwordEncoder.encode(reqBody.password()),
@@ -160,8 +160,7 @@ public class MemberService {
     }
 
     // 현재 로그인된 회원을 찾는 메서드
-    private Member findMemberByAccessToken() {
-        String accessToken = cookieConfig.getCookieValue("accessToken");
+    private Member findMemberByAccessToken(String accessToken) {
         if (accessToken == null || accessToken.isBlank()) {
             throw new CustomException(ErrorCode.TOKEN_NOT_FOUND);
         }

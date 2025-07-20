@@ -141,8 +141,11 @@ public class MemberController {
 
     @Operation(summary = "회원 정보 조회", description = "회원 정보 조회 API")
     @GetMapping("/memberInfo")
-    public ResponseEntity<ApiResponse<MemberInfoResponseDto>> getMemberInfo() {
-        MemberInfoResponseDto memberInfoResponseDto = memberService.getMemberInfo();
+    public ResponseEntity<ApiResponse<MemberInfoResponseDto>> getMemberInfo(
+            HttpServletRequest req
+    ) {
+        String accessToken = cookieConfig.getCookieValue(req, "accessToken");
+        MemberInfoResponseDto memberInfoResponseDto = memberService.getMemberInfo(accessToken);
 
         // 성공 응답
         return ResponseEntity.ok(
@@ -156,9 +159,11 @@ public class MemberController {
     @Operation(summary = "회원 정보 수정", description = "회원 정보 수정 API")
     @PutMapping("/memberInfo")
     public ResponseEntity<ApiResponse<MemberInfoUpdateResponseDto>> updateMemberInfo(
+            HttpServletRequest req,
             @Valid @RequestBody MemberInfoUpdateRequestDto reqBody
     ) {
-        MemberInfoUpdateResponseDto MemberInfoUpdateResponseDto = memberService.updateMemberInfo(reqBody);
+        String accessToken = cookieConfig.getCookieValue(req, "accessToken");
+        MemberInfoUpdateResponseDto MemberInfoUpdateResponseDto = memberService.updateMemberInfo(reqBody, accessToken);
         // 성공 응답
         return ResponseEntity.ok(
                 ApiResponse.success(
