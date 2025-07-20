@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Component
 public class CookieConfig {
-    @Value("${custom.domain}")
+    @Value("${custom.cookie}")
     private String domain;
 
     // HTTP 요청 쿠키들 중에서 특정 이름을 가진 쿠키의 값을 안전하게 추출
